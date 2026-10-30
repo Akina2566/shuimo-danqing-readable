@@ -1,0 +1,24 @@
+{
+  "name": "dsh-plugin-bg-motion",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Gate a skin's background video on session activity: play while a turn is producing output, freeze on the current frame while idle.",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "engines": {
+      "dsh": ">=0.2.1-rc.3"
+    },
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web"
+    }
+  }
+}

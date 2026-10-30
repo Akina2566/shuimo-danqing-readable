@@ -34,186 +34,164 @@
 
 ---
 
-## 📦 安装（三步，含前置依赖）
+## 📦 安装
 
-### 先说清一件事：皮肤功能不是 DSH 自带的
+> **先说结论：想要「聊天时才动」的完整效果，用一键脚本，它会把皮肤和动画插件一起装好。**
+> 只复制皮肤文件夹也能用，但背景视频会一直循环播放 —— 因为这个效果不在皮肤里，靠插件实现。
 
-DSH 装完之后，**默认是没有「皮肤」这回事的** —— 没有皮肤目录、没有皮肤中心界面、也没有 `.dsh/skins` 这个文件夹。
-
-这些全部来自一个**第三方插件**：`@linxin666/dsh-client-ui-skin-center`
-（属于 `@linxin666/dsh-web-all` 全家桶，作者 [zhu1090093659](https://github.com/zhu1090093659/dsh-web)）。
-
-所以装皮肤其实是两步：**先装插件（一次性），再放皮肤（换皮肤时重复）**。
-
-```mermaid
-flowchart LR
-    A[装插件<br/>皮肤中心] --> B[放皮肤目录]
-    B --> C[设置里选中<br/>立即生效]
-```
+| 你装了什么 | 得到什么 |
+| --- | --- |
+| 只放皮肤文件夹 | 字体、配色、去描边、定格帧资源；**背景视频一直循环** |
+| **一键脚本（皮肤 + 插件）** | 上面的全部 + **聊天时才播放、空闲定格第 16 帧** ← 灵魂在这里 |
 
 ---
 
-### 第 0 步：先确认插件在不在（30 秒）
+### ✅ 方式一：一键安装（推荐，装全套）
 
-打开 DSH → **设置**，看左侧有没有 **「皮肤中心」** 这一项。
+先确认 DSH 装过「皮肤中心」插件（**设置 → 皮肤中心** 能打开）。
+如果没有，见本文末尾的 [前置依赖](#前置依赖皮肤中心不是-dsh-自带的) 一节。
 
-| 看到什么 | 说明 | 下一步 |
-| --- | --- | --- |
-| ✅ 有「皮肤中心」 | 插件已装，直接跳到第 1 步 | 去第 1 步 |
-| ❌ 没有 / 找不到设置里这一项 | 插件没装 | 先看第 0.5 步 |
-| ❓ 不确定 | 打开 `~/.dsh/skins` 文件夹看是否存在 | 不存在 = 插件没装 |
-
-### 第 0.5 步：装插件（只做一次）
-
-任选一种：
-
-**A. 用 DSH 自带的方式装（推荐）**
-
-在 DSH 的对话里直接说：
-
-> 帮我安装插件 `@linxin666/dsh-web-all`，装好后告诉我怎么启用皮肤中心。
-
-或者用命令行：
-
-```bash
-dsh plugin --profile web add @linxin666/dsh-web-all
-# 或者只装皮肤中心本体：
-dsh plugin --profile web add @linxin666/dsh-client-ui-skin-center
-```
-
-装完**重启一次 DSH**，再看设置里是否有「皮肤中心」。
-
-**B. 手动装（插件市场）**
-
-如果你的 DSH 装了「插件市场」入口，直接在市场里搜 `dsh-web-all` 或 `皮肤中心` 安装。
-
-> ⚠️ 装插件是**一次性**的事，以后换任何皮肤都不用重复。
-> 如果你只想要皮肤、不想要全家桶里的其他功能（任务看板、宠物、远程控制等），装
-> `@linxin666/dsh-client-ui-skin-center` 本体即可。
-
----
-
-### 第 1 步：放皮肤（换皮肤时只做这一步）
-
-DSH 皮肤**就是一个文件夹**，放到 `~/.dsh/skins/` 下面就生效。
-
-**Windows 路径**：`%USERPROFILE%\.dsh\skins\`
-**macOS / Linux 路径**：`~/.dsh/skins/`
-
-#### 方式一：git clone（推荐，以后能一键更新）
-
-```bash
-git clone https://github.com/Akina2566/shuimo-danqing-readable.git \
-  ~/.dsh/skins/shuimo-danqing-readable
-```
-
-Windows PowerShell（注意反引号是续行）：
+**Windows**（在仓库目录里，右键 → 在终端中打开）：
 
 ```powershell
-git clone https://github.com/Akina2566/shuimo-danqing-readable.git `
-  "$env:USERPROFILE\.dsh\skins\shuimo-danqing-readable"
+powershell -ExecutionPolicy Bypass -File .\install.ps1
 ```
 
-#### 方式二：下载 ZIP（没装 git 就用这个）
-
-1. 仓库右上角 **Code → Download ZIP**
-2. 解压
-3. 把解压出来的文件夹**改名为** `shuimo-danqing-readable`
-   （**必须**和 `skin.json` 里的 `id` 完全一样，否则不识别）
-4. 整个文件夹丢进 `~/.dsh/skins/`
-
-#### 方式三：一条命令（macOS / Linux）
+**macOS / Linux**：
 
 ```bash
+bash install.sh
+```
+
+脚本会做完这些事，并打印每一步结果：
+
+1. 皮肤 → `~/.dsh/skins/shuimo-danqing-readable/`
+2. 插件 → `<profile>/node_modules/dsh-plugin-bg-motion/`
+3. 插件挂进 profile 的 `bundles`（**自动备份** `package.json.bak-bgmotion`）
+
+> 脚本只动「已经装了皮肤中心」的那个 profile，不会污染其它 profile。
+> 如果你是从 git 克隆的（有 `.git` 目录），插件会用软链接指向仓库，
+> 以后 `git pull` 更新后**不用重装**。
+
+**装完 → 完全退出 DSH 再打开 → 设置 → 皮肤中心 → 选「鲸鱼娘 · 水墨丹青（清晰版）」。**
+
+---
+
+### 方式二：只放皮肤（手动，无动画）
+
+不想要动画、只想要字体和配色的话，把皮肤文件夹丢进去就行。
+
+```bash
+# 一条命令（macOS / Linux）
 mkdir -p ~/.dsh/skins && cd ~/.dsh/skins \
   && curl -L https://github.com/Akina2566/shuimo-danqing-readable/archive/refs/heads/main.tar.gz \
   | tar xz && mv shuimo-danqing-readable-main shuimo-danqing-readable
 ```
 
-#### 放对没有？看这个结构
+Windows：仓库右上角 **Code → Download ZIP** → 解压 → 文件夹改名为
+`shuimo-danqing-readable` → 放进 `%USERPROFILE%\.dsh\skins\`。
+
+正确的目录结构（`skin.json` 必须在这一层）：
 
 ```
 ~/.dsh/skins/
-└── shuimo-danqing-readable/     ← 文件夹名必须叫这个
-    ├── skin.json                ← 关键：必须在**这一层**，皮肤中心靠它识别
+└── shuimo-danqing-readable/
+    ├── skin.json      ← 关键，皮肤中心靠它识别
     ├── skin.css
     ├── patches.css
     ├── assets/
-    └── preview/
+    ├── preview/
+    └── plugin/        ← 动画插件（手动装时可忽略）
 ```
 
 两个最常见的错：
 
-| 错误 | 现象 | 正确做法 |
-| --- | --- | --- |
-| 套了两层文件夹 | 皮肤中心里什么都没有 | 让 `skin.json` 直接位于 `shuimo-danqing-readable/` 下 |
-| 文件夹名不对 | 皮肤中心里什么都没有 | 必须叫 `shuimo-danqing-readable` |
+| 错误 | 现象 |
+| --- | --- |
+| 多套了一层文件夹 | 皮肤中心里看不到这个皮肤 |
+| 文件夹名不是 `shuimo-danqing-readable` | 同上 |
 
 ---
 
-### 第 2 步：启用
+### 卸载
 
-打开 DSH → **设置 → 皮肤中心** → 选 **「鲸鱼娘 · 水墨丹青（清晰版）」**。
-
-页面会立刻切换，**不用重启**。
-
-> 如果换了没反应，按 `Ctrl+Shift+R` 硬刷新一次（浏览器会缓存旧 CSS）。
-
-### 卸载 / 换回
-
-在皮肤中心选中其他皮肤，然后删掉文件夹：
-
-```bash
-rm -rf ~/.dsh/skins/shuimo-danqing-readable
-```
+1. 皮肤中心里切回别的皮肤
+2. 删目录：`rm -rf ~/.dsh/skins/shuimo-danqing-readable`
+3. 想连插件一起卸：把 profile 的 `package.json` 恢复成
+   `package.json.bak-bgmotion`，再删 `node_modules/dsh-plugin-bg-motion`
 
 ---
 
 ### 🤖 懒得动手？让 AI 帮你装
 
-把下面这段**整段复制**给你的 AI 助手（DSH 里的对话、Claude、ChatGPT 都行），它会自己去查、去装：
+把下面这段**整段复制**给 AI（DSH 对话、Claude、ChatGPT 都行）：
 
 ```text
-帮我在这台电脑上安装一个 DSH（DeepSeek Harness）皮肤。
+帮我在这台电脑上安装一个 DSH（DeepSeek Harness）皮肤，要装全套（含动画插件）。
 
-目标皮肤：https://github.com/Akina2566/shuimo-danqing-readable
-皮肤 id：shuimo-danqing-readable
+仓库：https://github.com/Akina2566/shuimo-danqing-readable
 
-请按顺序完成，每步都先检查再动手，不要跳步：
+请按顺序做，每步先检查再动手：
 
-1. 确认 DSH 的配置目录在哪（通常是 ~/.dsh，Windows 是 %USERPROFILE%\.dsh）。
-   检查 <DSH配置目录>/skins 是否存在。
+1. 找到 DSH 配置目录（一般 ~/.dsh，Windows 是 %USERPROFILE%\.dsh）。
+   不存在就先让我打开一次 DSH。
 
-2. 检查「皮肤中心」插件是否已安装。判断依据任一即可：
-   - <DSH配置目录>/profiles/<profile名>/package.json 里出现
-     @linxin666/dsh-client-ui-skin-center 或 @linxin666/dsh-web-all
-   - <DSH配置目录>/profiles/<profile名>/node_modules 下有
-     @linxin666/dsh-client-ui-skin-center 目录
-   如果没有装，请帮我装：
-     dsh plugin --profile <profile名> add @linxin666/dsh-client-ui-skin-center
-   （或者装全家桶 @linxin666/dsh-web-all，二选一，先问我选哪个）
+2. 检查「皮肤中心」插件是否已装：看 <DSH配置目录>/profiles/<profile>/package.json
+   里有没有 @linxin666/dsh-web-all 或 @linxin666/dsh-client-ui-skin-center。
+   没装就告诉我，让我先装（dsh plugin --profile <profile> add @linxin666/dsh-web-all）。
 
-3. 把皮肤克隆到 <DSH配置目录>/skins/shuimo-danqing-readable
-   （注意目录名必须是 shuimo-danqing-readable，与 skin.json 的 id 一致）：
-     git clone https://github.com/Akina2566/shuimo-danqing-readable.git <该路径>
-   如果本机没有 git，就下载
-     https://github.com/Akina2566/shuimo-danqing-readable/archive/refs/heads/main.zip
-   解压后把文件夹改名为 shuimo-danqing-readable 放到位。
+3. 把仓库克隆到临时目录，然后运行仓库里的安装脚本：
+   - Windows: powershell -ExecutionPolicy Bypass -File .\install.ps1
+   - macOS/Linux: bash install.sh
+   这个脚本会自动装皮肤 + 装动画插件 + 挂进 profile。
 
-4. 校验：确认 <DSH配置目录>/skins/shuimo-danqing-readable/skin.json 存在，
-   且里面的 "id" 等于 "shuimo-danqing-readable"。
-   如果 skin.json 在更深一层（比如多套了一个文件夹），把它移到正确层级。
+4. 校验结果：
+   - <DSH配置目录>/skins/shuimo-danqing-readable/skin.json 存在
+   - <DSH配置目录>/profiles/<profile>/node_modules/dsh-plugin-bg-motion 存在
+   - 该 profile 的 package.json 的 dsh.profile.bundles 里有 dsh-plugin-bg-motion
 
-5. 告诉我结果，并提示我：
-   - 如果刚装了插件，需要重启一次 DSH；
-   - 重启后在「设置 → 皮肤中心」里选「鲸鱼娘 · 水墨丹青（清晰版）」；
-   - 换了没反应就按 Ctrl+Shift+R 硬刷新。
+5. 告诉我要重启 DSH，然后在「设置 → 皮肤中心」里选「鲸鱼娘 · 水墨丹青（清晰版）」。
+   换完没反应就按 Ctrl+Shift+R 硬刷新。
 
-注意：不要删除 .dsh 目录里的其它内容，不要改动我的 profile 里无关的插件行。
+注意：不要删除 .dsh 里的其它内容，不要改 profile 里无关的插件行；
+脚本会自动备份 package.json，改坏了可以还原。
 ```
 
-> 💡 想连「聊天时才动」的背景动画一起装，再加一句：
-> 「另外把 https://github.com/Akina2566/dsh-plugin-bg-motion 也按它的 README 挂到 profile 的 bundles 里。」
+---
+
+### 前置依赖：「皮肤中心」不是 DSH 自带的
+
+DSH 装完之后**默认没有皮肤功能** —— 没有皮肤目录、没有皮肤中心界面、也没有 `.dsh/skins`。
+
+这些全部来自第三方插件 **`@linxin666/dsh-client-ui-skin-center`**
+（属于 `@linxin666/dsh-web-all` 全家桶，作者 [zhu1090093659](https://github.com/zhu1090093659/dsh-web)）。
+
+| 检查 | 结果 | 怎么办 |
+| --- | --- | --- |
+| 设置里有「皮肤中心」 | ✅ 已装 | 直接用上面的安装方式 |
+| 设置里没有 / 找不到 | ❌ 未装 | 先装插件（见下） |
+
+装插件（任选一种）：
+
+```bash
+# 只装皮肤中心本体（推荐，不含任务看板/宠物/远程等其它功能）
+dsh plugin --profile web add @linxin666/dsh-client-ui-skin-center
+
+# 或者装全家桶（含皮肤中心 + 一批其它插件）
+dsh plugin --profile web add @linxin666/dsh-web-all
+```
+
+也可以在 DSH 对话里直接说：「帮我安装插件 `@linxin666/dsh-client-ui-skin-center`」。
+装完**重启一次** DSH。
+
+皮肤目录默认位置（插件确定）：
+
+```
+~/.dsh/skins/<皮肤id>/
+Windows: %USERPROFILE%\.dsh\skins\<皮肤id>\
+```
+
+可用环境变量 `DSH_SKINS_HOME` 或 `DSH_SKINS_DIR` 改（优先前者）。
 
 ---
 

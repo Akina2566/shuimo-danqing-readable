@@ -1,0 +1,8 @@
+# Background-motion gate.
+#
+# One row, browser half only. The row id is namespaced so it can never collide
+# with a family row; the package name is the row name, which is what the web
+# module scanner reads to serve lib/client.js into the client roster.
+- insert:
+    - id: bg-motion
+      name: 'dsh-plugin-bg-motion'
