@@ -1,6 +1,6 @@
 # Whale Girl · Ink Wash (Readable)
 
-[中文](README.zh.md) | English
+[中文](../README.md) | English
 
 > **This is a fork, not the original skin.**
 > The original **"Whale Girl · Ink Wash"** was created by **stushansusu**, published via
@@ -9,7 +9,24 @@
 >
 > All artwork (background video, paper textures, character art) remains copyright of the
 > original author and is redistributed here under the original license terms.
-> The original design documentation is preserved in [`docs/ORIGINAL-README.md`](docs/ORIGINAL-README.md).
+> The original design documentation is preserved in [../docs/ORIGINAL-README.md](docs/ORIGINAL-README.md).
+
+---
+
+
+## Quick install
+
+A DSH skin is just a directory under `~/.dsh/skins/`. No restart needed.
+
+```bash
+git clone https://github.com/Akina2566/shuimo-danqing-readable.git \
+  ~/.dsh/skins/shuimo-danqing-readable
+```
+
+Then open **Settings -> Skin Center** and pick "鲸鱼娘 · 水墨丹青（清晰版）".
+
+The folder name must match the `id` in `skin.json` (`shuimo-danqing-readable`),
+and `skin.json` must sit at the root of that folder.
 
 ---
 
