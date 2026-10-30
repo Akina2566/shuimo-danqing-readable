@@ -4,7 +4,7 @@
 
 ![改前 / 改后对比](docs/images/before-after.png)
 
-> **只想赶紧装？** 跳到 [📦 安装（三步，含前置依赖）](#-安装三步含前置依赖)，
+> **只想赶紧装？** 跳到 [📦 安装](#-安装)，
 > 或者直接复制 [🤖 让 AI 帮你装](#-懒得动手让-ai-帮你装) 里的提示词。
 
 ---
@@ -36,17 +36,13 @@
 
 ## 📦 安装
 
-> **先说结论：想要「聊天时才动」的完整效果，用一键脚本，它会把皮肤和动画插件一起装好。**
-> 只复制皮肤文件夹也能用，但背景视频会一直循环播放 —— 因为这个效果不在皮肤里，靠插件实现。
-
-| 你装了什么 | 得到什么 |
-| --- | --- |
-| 只放皮肤文件夹 | 字体、配色、去描边、定格帧资源；**背景视频一直循环** |
-| **一键脚本（皮肤 + 插件）** | 上面的全部 + **聊天时才播放、空闲定格第 16 帧** ← 灵魂在这里 |
+> **只有一个安装方式：跑一键脚本。**
+> 它会把皮肤和动画插件一起装好 —— 因为这个皮肤的灵魂（聊天时才动、空闲定格）由插件实现，
+> 单独放个皮肤文件夹是没有这个效果的。
 
 ---
 
-### ✅ 方式一：一键安装（推荐，装全套）
+### 一键安装
 
 先确认 DSH 装过「皮肤中心」插件（**设置 → 皮肤中心** 能打开）。
 如果没有，见本文末尾的 [前置依赖](#前置依赖皮肤中心不是-dsh-自带的) 一节。
@@ -74,42 +70,6 @@ bash install.sh
 > 以后 `git pull` 更新后**不用重装**。
 
 **装完 → 完全退出 DSH 再打开 → 设置 → 皮肤中心 → 选「鲸鱼娘 · 水墨丹青（清晰版）」。**
-
----
-
-### 方式二：只放皮肤（手动，无动画）
-
-不想要动画、只想要字体和配色的话，把皮肤文件夹丢进去就行。
-
-```bash
-# 一条命令（macOS / Linux）
-mkdir -p ~/.dsh/skins && cd ~/.dsh/skins \
-  && curl -L https://github.com/Akina2566/shuimo-danqing-readable/archive/refs/heads/main.tar.gz \
-  | tar xz && mv shuimo-danqing-readable-main shuimo-danqing-readable
-```
-
-Windows：仓库右上角 **Code → Download ZIP** → 解压 → 文件夹改名为
-`shuimo-danqing-readable` → 放进 `%USERPROFILE%\.dsh\skins\`。
-
-正确的目录结构（`skin.json` 必须在这一层）：
-
-```
-~/.dsh/skins/
-└── shuimo-danqing-readable/
-    ├── skin.json      ← 关键，皮肤中心靠它识别
-    ├── skin.css
-    ├── patches.css
-    ├── assets/
-    ├── preview/
-    └── plugin/        ← 动画插件（手动装时可忽略）
-```
-
-两个最常见的错：
-
-| 错误 | 现象 |
-| --- | --- |
-| 多套了一层文件夹 | 皮肤中心里看不到这个皮肤 |
-| 文件夹名不是 `shuimo-danqing-readable` | 同上 |
 
 ---
 
@@ -195,23 +155,23 @@ Windows: %USERPROFILE%\.dsh\skins\<皮肤id>\
 
 ---
 
-## 配合插件：让背景「聊天时才动」
+## 动画插件（已内置，无需另装）
 
-本皮肤自带一张定格帧 `assets/sm-idle-16.webp`。配合
-[dsh-plugin-bg-motion](https://github.com/Akina2566/dsh-plugin-bg-motion)，可做到：
+「聊天时才动」由插件 `dsh-plugin-bg-motion` 实现，它**已经放在本仓库的 `plugin/` 目录里**，
+一键安装脚本会自动装好并挂进 profile，你不需要再去别的仓库拿。
+
+它做的事：
 
 - **聊天进行中** → 背景播放完整 25.33 秒视频
-- **其余时间** → 定格在第 16 帧（闭眼、有雨丝与花），且压暗到与静帧一致
+- **其余时间** → 定格在第 16 帧（闭眼、有雨丝与花），并压暗到与静帧一致
 
-安装插件（可选）：
+插件源码位置：`plugin/`（`lib/` 为已构建产物，`src/` 为源码）。
+装好后想单独更新它：
 
 ```bash
-git clone https://github.com/Akina2566/dsh-plugin-bg-motion.git \
-  ~/dsh-plugin-bg-motion
-# 然后按插件 README 挂到 profile 的 bundles 里，重启 DSH 生效
+git pull                      # 拉到最新
+# 若安装时是复制的（而非软链），重跑一次安装脚本即可同步
 ```
-
-不装插件也完全可用：皮肤会正常显示背景视频（一直播放）。
 
 ---
 
@@ -396,6 +356,13 @@ body span:has(> [data-slot='sidebar.brand.name'])::after { content: none; }
 │   ├── ORIGINAL-README.zh.md        # 原作完整设计文档（中文）
 │   ├── ORIGINAL-README.md           # 原作完整设计文档（英文）
 │   └── README.en.md                 # 本文件英文版
+├── plugin/                          # 动画插件（已内置，安装脚本自动挂载）
+│   ├── lib/                         # 已构建产物（client.js / index.js）
+│   ├── src/                         # 源码
+│   ├── cordis.patch.yml             # 插件行声明
+│   └── package.json
+├── install.ps1                      # 一键安装（Windows）
+├── install.sh                       # 一键安装（macOS / Linux）
 ├── ATTRIBUTION.md                   # 归属与来源
 ├── LICENSE                          # CC BY-NC-SA 4.0
 └── README.md                        # 本文件
