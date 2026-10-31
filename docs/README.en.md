@@ -217,6 +217,20 @@ author objects to this repository, it will be taken down on request.
 
 ## Changelog
 
+### v1.0.1
+
+- Fix: the composer attachment "remove" button was unusable. The generic button rule
+  `button:not([aria-haspopup])` forced `position:relative` onto it, dropping the 18px
+  circle below the 64px thumbnail, where `AttachmentRail`'s `overflow:auto hidden`
+  clipped it away — hovering showed nothing, so attachments could not be removed
+- Added an exception rule at the end of `patches.css`: restores position and colors to
+  the upstream DSH values, plus a separate `svg` foreground reset for the × glyph
+  (the shell paints it `#dfe2e5`, invisible on a cream circle)
+- Selectors now use the stable CSS Modules suffixes `_imageItem` / `_remove` instead of
+  the hashed prefix, so a DSH rebuild cannot silently break the fix
+- A commented-out "always visible" switch is included for those who prefer the button
+  to stay on screen instead of appearing on hover
+
 ### v1.0.0-readable
 
 - Body/UI font switched to Microsoft YaHei; decorative faces keep KaiTi
