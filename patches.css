@@ -2115,21 +2115,32 @@ body [role='listbox'] [role='option']:hover {
    两处都带明显的蓝偏，在暗底 + 墨玻璃上读起来就是"青绿色描边"。
    这里直接压成中性灰（R=G=B 附近），只保留亮度层级，不再带任何色相。 */
 
-/* 侧栏当前行：左缘那道竖笔与墨点改为纯灰，去掉蓝偏 */
+/* 侧栏当前行：深墨底 + 亮字。
+   （曾把这条误改成 #d0d4d8 这类接近纯白的灰，结果整行被铺成浅色带，
+     纸白文字压上去反而看不见；这里改回「淡淡的提亮 + 亮字」。） */
 body [data-pane='sidebar'] [role='treeitem'][aria-selected='true'],
 body [data-pane='sidebar'] [role='treeitem'][aria-expanded='true'] {
+  background-color: #ffffff0f !important;
   background-image:
-    radial-gradient(circle, #d0d4d8ff 0 1.8px, #d0d4d86b 2.4px, transparent 3px),
-    linear-gradient(180deg, #cfd3d7e0 0%, #c6cacfce 58%, #bcc1c675 84%, #b3b8bd16 100%),
-    repeating-linear-gradient(180deg, #c2c7cc7b 0 3px, transparent 3px 8px),
-    repeating-linear-gradient(180deg, #b8bdc24c 0 7px, transparent 7px 18px) !important;
+    radial-gradient(circle, #e8e3d2e6 0 1.8px, #e8e3d26b 2.4px, transparent 3px),
+    linear-gradient(180deg, #c3cad1d9 0%, #c3cad1bf 58%, #c3cad16b 84%, #c3cad114 100%),
+    repeating-linear-gradient(180deg, #c3cad15c 0 3px, transparent 3px 8px),
+    repeating-linear-gradient(180deg, #c3cad138 0 7px, transparent 7px 18px) !important;
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat !important;
+  /* 显式钉住尺寸与位置：不写的话 4 层里多出来的层会按 auto 铺满整行 */
+  background-size: 5px 5px, 2px 100%, 2px 100%, 2px 100% !important;
+  background-position: 2px 50%, 3px 0, 3px 0, 3px 0 !important;
+  color: #f4efe2 !important;
 }
-/* 展开的子会话行：左缘那道更淡的竖笔同样去色 */
+/* 展开的子会话行：左缘一道很淡的竖笔（不铺面） */
 body [data-pane='sidebar'] [role='treeitem']:not([aria-expanded]) {
   background-image:
     linear-gradient(180deg, #b9bec36b 0%, #b4b9be63 58%, #aab0b538 84%, #a3a9ae0b 100%),
     repeating-linear-gradient(180deg, #b0b6bb3b 0 3px, transparent 3px 8px),
     repeating-linear-gradient(180deg, #a8aeb324 0 7px, transparent 7px 18px) !important;
+  background-repeat: no-repeat, no-repeat, no-repeat !important;
+  background-size: 1px 100%, 1px 100%, 1px 100% !important;
+  background-position: 0 0, 0 0, 0 0 !important;
 }
 /* 发送键：外圈那道亮环（壳在 hover/focus 时给的主色光环）压成中性灰 */
 body [data-composer-card] button:not([aria-haspopup]),
