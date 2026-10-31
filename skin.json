@@ -4,7 +4,7 @@
   "id": "shuimo-danqing-readable",
   "name": "鲸鱼娘 · 水墨丹青（清晰版）",
   "nameEn": "Whale Girl · Ink Wash (Readable)",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "stushansusu (original) / Akina2566 (readable fork)",
   "tagline": "宣纸与蓝墨 · 静帧墨画 · 微软雅黑正文 · 去彩色描边",
   "description": "鲸鱼娘 · 水墨丹青（清晰版）—— 基于 stushansusu 原作《鲸鱼娘 · 水墨丹青》的本地改版。改动：① 正文与 UI 字体从「宋体回退」换成微软雅黑，小字号整体上调一档；② 去掉全部墨绿与牌子蓝的彩色描边（原皮肤把「墨绿」当作可交互语义色，散布 300+ 处），统一为中性灰墨；③ 左上角品牌行恢复为原版 deepseek HARNESS 字标，去掉朱印；④ 暗色模式次要文字提亮一档；⑤ 面板不透明度压实，提升暗底可读性。背景视频与定格图保留原作素材；配合 dsh-plugin-bg-motion 可实现「聊天时播放、空闲定格第 16 帧」。",

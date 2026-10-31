@@ -418,6 +418,18 @@ A：不会。目录里没有 `dsh-market.provenance.json`，皮肤中心把它�
 
 ## 变更记录
 
+### v1.0.1
+
+- 修复：composer 里附件的「移除」圆钮失效——第 6 节的通用按钮规则
+  `button:not([aria-haspopup])` 把它顶成 `position:relative`，圆钮掉到 64px 缩略图
+  下方，又被 `AttachmentRail` 的 `overflow:auto hidden` 裁掉，悬停也看不到，
+  附件等于没有删除入口
+- 末尾新增一条例外规则，把定位与配色复位成 DSH 原件，并单独复位 × 图标的
+  `svg` 前景色（壳把它设成 `#dfe2e5`，压在奶白圆钮上看不见）
+- 选择器改用 CSS Modules 的稳定后缀 `_imageItem` / `_remove`，不绑哈希前缀，
+  DSH 升级换类名前缀也不会失效
+- 另附一行注释掉的「常显」开关，想让移除键常驻时取消注释即可
+
 ### v1.0.0-readable
 
 - 正文/UI 字体换为微软雅黑，装饰字保留楷体
