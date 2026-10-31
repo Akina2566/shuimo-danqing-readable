@@ -2172,3 +2172,37 @@ body [data-pane='sidebar'] [role='treeitem'][aria-expanded='true'] {
 
 /* 舞台里的视频压暗：与静止图烘进像素的那层 scrim 等效。
    直接作用在 video 上，静止图（img）完全不受影响，两边亮度因此一致。 */
+
+/* ── 例外：草稿附件缩略图的「移除键」 ──────────────────────────────────────
+   第 6 节与「合成残色」两处把 composer 里所有 `button:not([aria-haspopup])`
+   统一改成了胶囊钮。附件缩略图右上角那颗 18px 的 × 也是不带 aria-haspopup 的
+   button，于是被连坐：DSH 原件给的 `position:absolute` 被这里的 `position:relative`
+   顶掉（(0,2,2) 压 (0,1,0)），圆钮从「缩略图右上角」掉回常规流、排到 64px 缩略图
+   下方，再被 AttachmentRail 的 `overflow:auto hidden` 纵向裁掉 —— 悬停也不出现，
+   等于附件没有删除入口。下面把定位与配色复位成 DSH 原件的样子，用更高的特异性
+   压过前面几条 !important。类名取 CSS Modules 的稳定后缀 `_imageItem` / `_remove`，
+   哈希前缀整段变了也照样命中。 */
+body [data-composer-card] [class*='_imageItem'] button[class*='_remove'] {
+  position: absolute !important;
+  top: 4px !important;
+  right: 4px !important;
+  width: 18px !important;
+  height: 18px !important;
+  border: none !important;
+  border-radius: 50% !important;
+  background-image: none !important;
+  background-color: var(--dsw-alias-button-contrast-fill) !important;
+  color: var(--dsw-alias-label-primary-inverted) !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  z-index: 1;
+  transition: opacity 0.2s ease-in-out;
+}
+/* × 那个图标吃的是 svg 自己的 color（壳把它设成了 #dfe2e5），压在奶白圆钮上
+   等于没有；这里一并掰回深墨。 */
+body [data-composer-card] [class*='_imageItem'] button[class*='_remove'] svg {
+  color: var(--dsw-alias-label-primary-inverted) !important;
+  filter: none !important;
+}
+/* 想让它常显、而不是悬停才出现，把下一行取消注释即可（.92 = 在场但不抢戏）。 */
+/* body [data-composer-card] [class*='_imageItem'] button[class*='_remove'] { opacity: 0.92 !important; } */
